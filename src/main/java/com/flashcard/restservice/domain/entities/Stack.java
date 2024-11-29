@@ -1,6 +1,7 @@
 package com.flashcard.restservice.domain.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
@@ -9,15 +10,19 @@ import java.time.Instant;
 @Table(name = "stacks")
 public class Stack {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @NotNull
     @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
     private String name;
 
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
