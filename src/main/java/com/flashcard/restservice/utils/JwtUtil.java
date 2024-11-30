@@ -1,6 +1,7 @@
 package com.flashcard.restservice.utils;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -32,7 +33,15 @@ public class JwtUtil implements IJwtUtil{
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
-
+    @Override
+    public boolean isValidToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(this.secretKey).build().parseClaimsJws(token);
+            return true;
+        } catch (SignatureException e) {
+            return false;
+        }
+    }
     @Override
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
