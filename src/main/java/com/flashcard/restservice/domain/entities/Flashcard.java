@@ -11,7 +11,6 @@ import java.time.Instant;
 public class Flashcard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "id", nullable = false)
     private Integer id;
 
