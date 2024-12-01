@@ -1,12 +1,11 @@
 package com.flashcard.restservice.configs;
 
 import com.flashcard.restservice.security.JwtAuthenticationFilter;
-import com.flashcard.restservice.services.UserService;
+import com.flashcard.restservice.services.User.UserService;
 import com.flashcard.restservice.utils.IJwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

@@ -1,7 +1,7 @@
 package com.flashcard.restservice.mapper;
 
 import com.flashcard.restservice.domain.entities.User;
-import com.flashcard.restservice.dto.requests.RegisterRequest;
+import com.flashcard.restservice.dto.requests.User.RegisterRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

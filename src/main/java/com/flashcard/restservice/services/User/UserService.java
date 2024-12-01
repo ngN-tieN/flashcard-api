@@ -1,7 +1,9 @@
-package com.flashcard.restservice.services;
+package com.flashcard.restservice.services.User;
 
 import com.flashcard.restservice.domain.entities.User;
 import com.flashcard.restservice.domain.repositories.UserRepo;
+import com.flashcard.restservice.dto.requests.User.RegisterRequest;
+import com.flashcard.restservice.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +19,13 @@ public class UserService implements IUserService, UserDetailsService {
 
     private final UserRepo userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserMapper userMapper;
+
     @Autowired
-    public UserService(UserRepo userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepo userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -28,13 +33,19 @@ public class UserService implements IUserService, UserDetailsService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
     }
+
     @Override
     public boolean existsByUsername(String username)
     {
         return userRepository.existsByUsername(username);
     }
     @Override
-    public void save(User user) {
+    public void createUser(RegisterRequest registerDto) {
+        User user = userMapper.toUser(registerDto);
+        save(user);
+    }
+
+    private void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }

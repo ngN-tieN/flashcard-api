@@ -1,18 +1,17 @@
 package com.flashcard.restservice.controllers;
 
 import com.flashcard.restservice.domain.entities.User;
-import com.flashcard.restservice.dto.requests.LoginRequest;
-import com.flashcard.restservice.dto.requests.RegisterRequest;
+import com.flashcard.restservice.dto.requests.User.LoginRequest;
+import com.flashcard.restservice.dto.requests.User.RegisterRequest;
 import com.flashcard.restservice.dto.responses.ApiResponse;
 import com.flashcard.restservice.mapper.UserMapper;
-import com.flashcard.restservice.services.IUserService;
+import com.flashcard.restservice.services.User.IUserService;
 import com.flashcard.restservice.utils.IJwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
@@ -23,14 +22,12 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final IUserService userService;
-    private final UserMapper userMapper;
     private final IJwtUtil jwtUtil;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, IUserService userService, UserMapper userMapper, IJwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
-        this.userMapper = userMapper;
         this.jwtUtil = jwtUtil;
     }
 
@@ -41,9 +38,7 @@ public class AuthController {
             var response = ApiResponse.error("Username already exists" );
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-
-        User user = userMapper.toUser(registerDto);
-        userService.save(user);
+        userService.createUser(registerDto);
         var response = ApiResponse.success("User registered successfully", null);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
