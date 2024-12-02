@@ -25,10 +25,10 @@ public class Studysession {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+
     @Column(name = "started_at")
     private Instant startedAt;
-
+    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "ended_at")
     private Instant endedAt;
 
